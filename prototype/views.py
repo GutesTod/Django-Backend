@@ -28,6 +28,33 @@ def GetUsers(request):
 def AddUsers(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
+        User.objects.create(
+            id = uuid.uuid4(),
+            name = serializer.data['name'],
+            surname = serializer.data['surname'],
+            hashed_password = serializer.data['hashed_password']
+        )
+        return Response(data = serializer.data ,status = status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def DelUser(request):
+    if User.objects.filter(name = request.data['name']):
+        user = User.objects.get(name=request.data['name'])
+        user.delete()
+        return Response(status= status.HTTP_200_OK)
+    else:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def FindUser(request):
+    if User.objects.filter(name = request.data['name']):
+        user = User.objects.get(name = request.data['name'])
+        data_json = {
+            'name' : user.name,
+            'surname' : user.surname,
+            'hashed_password' : user.hashed_password
+        }
+        return Response(data = data_json, status= status.HTTP_200_OK)
+    else:
+        return Response(data = 'User not found', status=status.HTTP_400_BAD_REQUEST)
