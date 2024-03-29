@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager
 
 import jwt
-import uuid
+
 from datetime import datetime
 from datetime import timedelta
 
@@ -67,7 +67,15 @@ class User(AbstractUser):
         null=True,
         )
 
+    name = models.CharField(
+        max_length=255,
+        blank=False,
+    )
     
+    surname = models.CharField(
+        max_length=255,
+        blank=False,
+    )
     
     # Свойство `USERNAME_FIELD` сообщает нам, какое поле мы будем использовать для входа.
     USERNAME_FIELD = 'email'
@@ -129,19 +137,10 @@ class User(AbstractUser):
             'exp': int(dt.strftime('%s'))
         }, settings.SECRET_KEY, algorithm='HS256')
 
-        return token.decode('utf-8')
+        return token#.decode('utf-8')
     
     
 class EventUser(models.Model):
-    name = models.CharField(
-        max_length=255,
-        blank=False,
-    )
-    
-    surname = models.CharField(
-        max_length=255,
-        blank=False,
-    )
     
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     

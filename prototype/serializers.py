@@ -1,3 +1,14 @@
+from rest_framework import routers, serializers, viewsets
+from .models import User
+from django.contrib.auth import authenticate
+
+# Serializers define the API representation.
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['name', 'surname', 'hashed_password']
+        
+        
 from rest_framework import serializers
 from .models import User
 
@@ -21,7 +32,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'token',)
+        fields = ('email', 'username', 'password', 'token', 'name', 'surname')
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)

@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import User
-from .serializers import UserSerializer
 from .serializers import LoginSerializer
 from .serializers import RegistrationSerializer
 
