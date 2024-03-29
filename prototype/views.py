@@ -1,6 +1,6 @@
 import uuid
 
-from rest_framework.decorators import api_view, APIView
+from rest_framework.decorators import api_view, APIView, authentication_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +10,7 @@ from .serializers import UserSerializer
 from .serializers import LoginSerializer
 from .serializers import RegistrationSerializer
 
+from .backends import JWTAuthentication
 
 @api_view(['GET'])
 def ApiOverview(request):
@@ -90,7 +91,7 @@ class RegistrationAPIView(APIView):
             status=status.HTTP_201_CREATED,
         )
 
-
+@authentication_classes((JWTAuthentication,))
 class LoginAPIView(APIView):
     """
     Logs in an existing user.
