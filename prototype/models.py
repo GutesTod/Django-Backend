@@ -62,6 +62,16 @@ class User(AbstractUser):
     """
     username = models.CharField(db_index=True, max_length=255, unique=True, null = True)
     
+    name = models.CharField(
+        max_length=255,
+        blank=False,
+    )
+    
+    surname = models.CharField(
+        max_length=255,
+        blank=False,
+    )
+    
     email = models.EmailField(
         validators=[validators.validate_email],
         unique=True,
@@ -135,15 +145,6 @@ class User(AbstractUser):
     
     
 class EventUser(models.Model):
-    name = models.CharField(
-        max_length=255,
-        blank=False,
-    )
-    
-    surname = models.CharField(
-        max_length=255,
-        blank=False,
-    )
     
     user_id = models.IntegerField(null=True)
     
