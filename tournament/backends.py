@@ -1,9 +1,14 @@
 from prototype.models import EventUser
 from 
 
-class AddPlayerMixin:
-    def add_models(model = EventUser, t_id: int = None):
-        for id in range(1, 8):
+class PlayersMixin:
+    def add_players(t_id: int = None, user_id: int = None):
+        data = EventUser.objects.filter(tour_id = t_id, user = user_id)
+        return data
+    
+    def 
+    
+        
             
                 
                 

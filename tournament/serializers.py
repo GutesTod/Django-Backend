@@ -23,5 +23,6 @@ class CreateMatchSerializer(serializers.ModelSerializer):
 class AddPlayerToMatchSerializer(serializers.ModelSerializer):
     
     class Meta:
-        
+        model = Match
+        fields = ()
         
