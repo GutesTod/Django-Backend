@@ -22,7 +22,7 @@ class PlayersSingleton:
             if match.is_end == True and match.user1_goals > match.user2_goals:
                 Match.objects.filter(tour_id=t_id, match_id=match.pk, enum_stage=to_stage).update(user1_id = user_id)
                 return True
-            elif match.user2_id == None and match.user1_goals > match.user2_goals:
+            elif match.is_end == None and match.user1_goals > match.user2_goals:
                 Match.objects.filter(tour_id=t_id, match_id=match.pk, enum_stage=to_stage).update(user2_id = user_id)
                 return True
         return False
@@ -55,7 +55,7 @@ class TournamentsSingleton:
                 id = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithm='HS256')['id']
             )
             for data in owner_data:
-                tournaments.append(data.tour.pk)
+                tournaments.append(data.tour.is_end, data.tour.pk)
             return json.dumps(tournaments)
         return json.dumps(Tournament.objects.values('pk'))
     

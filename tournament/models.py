@@ -8,6 +8,9 @@ class Tournament(models.Model):
     count_users = models.IntegerField(
         default=0
     )
+    is_end = models.BooleanField(
+        default=False
+    )
 class Match(models.Model):
     match_id = models.IntegerField()
     user1_id = models.IntegerField(null=True)

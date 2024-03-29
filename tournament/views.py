@@ -26,4 +26,21 @@ def GetTournaments(request):
     json_data = TournamentsSingleton.get_tournaments(token=data)
     return Response({'status': 'OK'}, status=status.HTTP_200_OK)
         
- 
+@api_view(['POST'])
+def AddPlayersToMatch(request):
+    if(PlayersSingleton.add_player_to_match(t_id=request.data['tour_id'], user_id=request.data['user_id'])):
+        return Response({'status': 'OK'}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({'status': 'error'}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def AddPlayersToStage(request):
+    if(PlayersSingleton.add_player_to_stage(
+        t_id = request.data['t_id'],
+        user_id = request.data['user_id'],
+        to_stage = request.data['to_stage'],
+        from_stage = request.data['from_stage']
+    )):
+        return Response({'status': 'OK'}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({'status': 'error'}, status=status.HTTP_400_BAD_REQUEST)
