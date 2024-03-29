@@ -131,7 +131,7 @@ class User(AbstractUser):
             'exp': int(dt.strftime('%s'))
         }, settings.SECRET_KEY, algorithm='HS256')
 
-        return token.decode('utf-8')
+        return token#.decode('utf-8')
     
     
 class EventUser(models.Model):
@@ -145,11 +145,12 @@ class EventUser(models.Model):
         blank=False,
     )
     
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    user_id = models.IntegerField(null=True)
     
     tour = models.ForeignKey(
         Tournament,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True
     )
     
     is_staff = models.BooleanField(

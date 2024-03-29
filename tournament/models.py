@@ -1,5 +1,4 @@
 from django.db import models
-from prototype.models import EventUser
 from django.utils.translation import gettext_lazy as _
 
 class Tournament(models.Model):
