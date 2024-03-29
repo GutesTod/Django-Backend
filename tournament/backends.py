@@ -1,7 +1,6 @@
-import jwt
 from prototype.models import EventUser
 from tournament.models import Tournament, Match
-from django.conf import settings
+from prototype.models import EventUser
 import json
 
 class PlayersSingleton:
@@ -27,7 +26,7 @@ class PlayersSingleton:
                 return True
         return False
     
-class MatchSingleton:
+class MatchMixin:
     def make_matchs(t_id: int = None):
         if t_id:
             for count in range(1,5):
@@ -40,23 +39,4 @@ class MatchSingleton:
     def get_matchs(t_id: int = None):
         data_get = Match.objects.filter(tour_id = t_id).values()
         return json.dumps(data_get)
-    
-class TournamentsSingleton:
-    def get_tournaments(owner_id: int = None):
-        if owner_id:
-            tournaments = []
-            owner_data = EventUser.objects.filter(is_staff = True, id = owner_id)
-            for data in owner_data:
-                tournaments.append(data.tour.pk)
-            return json.dumps(tournaments)
-        return json.dumps(Tournament.objects.values('pk'))
-    
-    def register_tournament(owner_id: int = None, token = None):
-        if owner_id:
-            tour_id_tmp = Tournament.objects.create().pk
-            EventUser.objects.filter(tour_id = tour_id_tmp).update(
-                user_id = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithm='HS256')['id']
-            )
-        else:
-            return False
     
