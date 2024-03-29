@@ -10,7 +10,7 @@ from datetime import timedelta
 from django.conf import settings
 
 from django.core import validators
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
 
 class UserManager(BaseUserManager):
@@ -43,17 +43,22 @@ class UserManager(BaseUserManager):
         """
         Create and save a SuperUser with the given email and password.
         """
-        
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError(_("Superuser must have is_staff=True."))
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError(_("Superuser must have is_superuser=True."))
         return self.create_user(email, password, **extra_fields)
 
-class User(AbstractBaseUser):
+class User(AbstractUser):
     """
     Определяет наш пользовательский класс User.
     Требуется имя пользователя, адрес электронной почты и пароль.
     """
     username = models.CharField(db_index=True, max_length=255, unique=True, null = True)
-
-    password = models.CharField(("password"), max_length=128, null=True)
     
     email = models.EmailField(
         validators=[validators.validate_email],
