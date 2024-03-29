@@ -13,6 +13,8 @@ from django.core import validators
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
 
+from tournament.models import Tournament
+
 class UserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
@@ -145,9 +147,9 @@ class EventUser(models.Model):
     
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     
-    tour_id = models.CharField(
-        max_length=255,
-        blank=False,
+    tour_id = models.ForeignKey(
+        Tournament,
+        on_delete=models.CASCADE
     )
     
     is_staff = models.BooleanField(
