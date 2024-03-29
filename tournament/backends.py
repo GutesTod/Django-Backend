@@ -28,6 +28,11 @@ class PlayersSingleton:
         return False
     
 class MatchSingleton:
+    def match_exists(t_id: int = None):
+        if (Match.objects.filter(tour_id = t_id).exists()):
+            return True
+        else:
+            return False
     def make_matchs(t_id: int = None):
         if t_id:
             for count in range(1,5):
@@ -42,20 +47,27 @@ class MatchSingleton:
         return json.dumps(data_get)
     
 class TournamentsSingleton:
-    def get_tournaments(owner_id: int = None):
-        if owner_id:
+    def get_tournaments(token = None):
+        if token:
             tournaments = []
-            owner_data = EventUser.objects.filter(is_staff = True, id = owner_id)
+            owner_data = EventUser.objects.filter(
+                is_staff = True, 
+                id = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithm='HS256')['id']
+            )
             for data in owner_data:
                 tournaments.append(data.tour.pk)
             return json.dumps(tournaments)
         return json.dumps(Tournament.objects.values('pk'))
     
-    def register_tournament(owner_id: int = None, token = None):
-        if owner_id:
+    def register_tournament(token = None):
+        if token:
             tour_id_tmp = Tournament.objects.create().pk
-            EventUser.objects.filter(tour_id = tour_id_tmp).update(
+            EventUser.objects.create(
+                tour = tour_id_tmp,
+                is_stuff = True,
                 user_id = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithm='HS256')['id']
             )
+            MatchSingleton.make_matchs(t_id=tour_id_tmp)
+            return True
         else:
             return False

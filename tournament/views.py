@@ -12,6 +12,18 @@ def GetMatchs(request):
         return Response(data=data, status=status.HTTP_200_OK)
     return Response({'status': 'error!', 'result': data}, status=status.HTTP_400_BAD_REQUEST)
 
-#@api_view(['POST'])
-#def MakeMatchs(request):
-    #if
+@api_view(['POST'])
+def RegisterTournament(request):
+    data = request.data["token"]
+    if (TournamentsSingleton.register_tournament(data)):
+        return Response({'status': 'OK'}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({'status': 'error'}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def GetTournaments(request):
+    data = request.data["token"]
+    json_data = TournamentsSingleton.get_tournaments(token=data)
+    return Response({'status': 'OK'}, status=status.HTTP_200_OK)
+        
+ 
