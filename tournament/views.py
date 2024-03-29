@@ -3,20 +3,20 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
-class LoginAPIView(APIView):
-    """
-    Logs in an existing user.
-    """
+from .backends import PlayersSingleton
+
+class AddPlayersAPIView(APIView):
+    
     permission_classes = [AllowAny]
-    serializer_class = LoginSerializer
 
     def post(self, request):
         """
-        Checks is user exists.
-        Email and password are required.
-        Returns a JSON web token.
+        Добавляет игрока в сетку турнира
         """
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if (PlayersSingleton.add_player_to_match(
+            t_id=request.data['t_id'],
+            user_id=request.data['user_id']
+        )):   
+            return Response({"status": "OK"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)

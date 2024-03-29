@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Tournament, Match
 from prototype.models import EventUser
+from .backends import PlayersMixin
 
 class RegistrationTournamentSerializer(serializers.ModelSerializer):
 

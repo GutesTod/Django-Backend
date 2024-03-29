@@ -147,7 +147,7 @@ class EventUser(models.Model):
     
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     
-    tour_id = models.ForeignKey(
+    tour = models.ForeignKey(
         Tournament,
         on_delete=models.CASCADE
     )

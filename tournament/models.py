@@ -13,7 +13,7 @@ class Match(models.Model):
     match_id = models.IntegerField()
     user1_id = models.IntegerField(null=True)
     user2_id = models.IntegerField(null=True)
-    tour_id = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    tour_id = models.IntegerField(null=False)
     user1_goals = models.IntegerField(null=True)
     user2_goals = models.IntegerField(null=True)
     
