@@ -71,6 +71,7 @@ class LoginSerializer(serializers.Serializer):
 
         return {
             'token': user.token,
+            'username' : user.username,
         }
         
 class RegistrationSerializer(serializers.ModelSerializer):

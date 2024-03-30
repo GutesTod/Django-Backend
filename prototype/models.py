@@ -142,6 +142,7 @@ class User(AbstractUser):
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token#.decode('utf-8')
+        #return jwt.decode(token,settings.SECRET_KEY, algorithms='HS256')
     
     
 class EventUser(models.Model):
